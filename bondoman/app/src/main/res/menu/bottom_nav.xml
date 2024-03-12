@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Transaction"
+        android:id="@+id/bill"
+        android:icon="@drawable/baseline_newspaper_24"/>
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Scan"
+        android:id="@+id/scan_cam"
+        android:icon="@drawable/baseline_document_scanner_24"/>
+    <item
+
+        android:title="Graph"
+        android:id="@+id/graph"
+        android:icon="@drawable/baseline_pie_chart_24"/>
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Settings"
+        android:id="@+id/settings"
+        android:icon="@drawable/baseline_settings_24"/>
+</menu>
