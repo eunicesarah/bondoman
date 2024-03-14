@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginPage"
+    android:background="@color/primary">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt1_login"
+        android:text="MLEBU"
+        android:textSize="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+    />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_login"
+        android:src="@drawable/login_logo"
+        android:layout_below="@id/txt1_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt2_login"
+        android:text="Sugeng Rawuh"
+        android:textSize="24dp"
+        android:fontFamily="@font/font_parisienne"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/img_login"
+    />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_txt1"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt2_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="E-mail"
+        app:helperText="Required*"
+        app:helperTextTextColor="@color/button"
+        app:endIconMode="clear_text"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_txt1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputlayout_txt2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputlayout_txt1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Kunci"
+        app:helperText="Required*"
+        app:helperTextTextColor="@color/button"
+        app:endIconMode="password_toggle"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_txt2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_login"
+        android:text="Mlebu"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:width="150dp"
+        android:background="@drawable/custom_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/inputlayout_txt2"
+        />
+
+</RelativeLayout>
