@@ -63,7 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_field"
-            android:hint="E-mail sampeyan"
             android:paddingLeft="10dp"
             android:textSize="16dp"
             />
@@ -96,7 +95,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_field"
-            android:hint="Kunci sampeyan"
             android:overScrollMode="ifContentScrolls"
             android:paddingLeft="10dp"
             android:textSize="16dp" />
