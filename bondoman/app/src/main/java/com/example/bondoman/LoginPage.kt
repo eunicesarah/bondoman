@@ -12,6 +12,12 @@ import android.widget.EditText
 import com.example.bondoman.retrofit.data.DataLogin
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import android.content.Intent
+import android.view.textclassifier.ConversationActions.Message
+import android.widget.Toast
+import com.example.bondoman.utils.AuthManager
+import com.google.gson.Gson
+import org.json.JSONObject
 
 class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,17 +47,30 @@ class LoginPage : AppCompatActivity() {
                    if(dataLogin != null)
                    {
                        val token = dataLogin.token
-                       Log.d("Login", "Token: $token")
+                       AuthManager.saveToken(this@LoginPage, token)
+                       val toMain = Intent(this@LoginPage, MainActivity::class.java)
+                       startActivity(toMain)
+                       finish()
                    }
                }
                else{
-                   Log.e("Login", "Failed: ${response.code()}")
+//                   Log.e("Login", "Error: ${response.code()}")
+                   val errorBody = response.errorBody()?.string()
+                   if(!errorBody.isNullOrEmpty()){
+                       val errorMessage = JSONObject(errorBody).getString("Error")
+                       showToast(errorMessage)
+                   }
                }
            }
            catch (e:Exception){
                Log.e("Login", "Error: ${e.message}")
+               showToast("An error occured: ${e.message}")
            }
        }
 
+    }
+
+    private fun showToast(message: String){
+        Toast.makeText(this@LoginPage, message, Toast.LENGTH_SHORT).show()
     }
 }

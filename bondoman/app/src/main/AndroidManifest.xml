@@ -17,14 +17,15 @@
             android:name=".LoginPage"
             android:screenOrientation="sensor"
             android:exported="false" />
-        <activity
-            android:name=".SplashScreen"
-            android:screenOrientation="sensor"
-            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="sensor"
-            android:exported="true">
+            android:exported="true"/>
+        <activity
+                android:name=".SplashScreen"
+                android:screenOrientation="sensor"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
