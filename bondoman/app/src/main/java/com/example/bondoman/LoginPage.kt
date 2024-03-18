@@ -47,6 +47,7 @@ class LoginPage : AppCompatActivity() {
                    if(dataLogin != null)
                    {
                        val token = dataLogin.token
+                       Log.d("Login", token)
                        AuthManager.saveToken(this@LoginPage, token)
                        val toMain = Intent(this@LoginPage, MainActivity::class.java)
                        startActivity(toMain)
