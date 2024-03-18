@@ -6,4 +6,23 @@
     <string name="title_scan_page">Scan</string>
     <string name="title_settings_page">Settings</string>
     <string name="title_home_page">Home</string>
+
+    <string name="defDate">01/01/2021</string>
+    <string name="defName">Name</string>
+    <string name="defAmount">Rp. 0</string>
+    <string name="defCategory">Category</string>
+
+
+    <!--    Tambah Transaksi-->
+    <string name="label_judul">Judhul</string>
+    <string name="label_nominal">Rega</string>
+    <string name="label_kategori">Bab</string>
+    <string-array name="kategori_options">
+        <item>@string/kategori_pengeluaran</item>
+        <item>@string/kategori_pemasukan</item>
+    </string-array>
+    <string name="label_lokasi">Latar</string>
+
+    <string name="kategori_pengeluaran">Pengeluaran</string>
+    <string name="kategori_pemasukan">Pemasukan</string>
 </resources>
