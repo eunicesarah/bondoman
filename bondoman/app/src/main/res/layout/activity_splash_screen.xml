@@ -21,6 +21,7 @@
         android:layout_below="@id/logoSplashScreen"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/font_parisienne"
+        android:textColor="@color/secondary"
         android:text="Bondoman"
         android:textSize="40dp" />
 </RelativeLayout>
