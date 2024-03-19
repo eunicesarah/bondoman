@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.content.ContentProviderCompat
+import androidx.fragment.app.FragmentTransaction
 import com.example.bondoman.retrofit.Retrofit
 import com.example.bondoman.retrofit.endpoint.EndpointCheckExpiry
 import com.example.bondoman.retrofit.request.CheckExpiryRequest
@@ -91,6 +92,11 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
                             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                         )
                     )
+
+                    val fragment = TransactionPage()
+                    val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+                    transaction.replace(R.id.frame_layout, fragment).commit()
+
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

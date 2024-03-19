@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.scan_cam -> replaceFragment(ScanPage())
                 R.id.graph -> replaceFragment(GraphPage())
                 R.id.settings -> replaceFragment(SettingsPage())
-                R.id.bill -> replaceFragment(AddTransactionPage())
+                R.id.bill -> replaceFragment(TransactionPage())
             }
             true
         }
