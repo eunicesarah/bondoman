@@ -17,6 +17,9 @@ import com.example.bondoman.room.TransactionDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 
 class TransactionPage : Fragment(R.layout.fragment_transaction_page) {
@@ -76,21 +79,23 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page) {
         }
     }
 
-    fun saldo(list : List<Transaction>) : Int {
-        var saldo = 0
+    fun saldo(list : List<Transaction>) : Double {
+        var saldo: Double = 0.0
         for (i in list) {
             if (i.field_kategori == "Pemasukan") {
-                saldo += i.field_nominal.toInt()
+                saldo += i.field_nominal.toDouble()
             } else {
-                saldo -= i.field_nominal.toInt()
+                saldo -= i.field_nominal.toDouble()
             }
         }
         return saldo
     }
 
-    fun Int.convert(): String {
-        val str = this.toString()
-        val regex = "(\\d)(?=(\\d{3})+\$)".toRegex()
-        return str.replace(regex, "\$1.")
+    fun Double.convert(): String {
+        val symbols = DecimalFormatSymbols(Locale.getDefault())
+        symbols.groupingSeparator = '.'
+        symbols.decimalSeparator = ','
+        val formatter = DecimalFormat("#,###.###", symbols)
+        return formatter.format(this)
     }
 }
