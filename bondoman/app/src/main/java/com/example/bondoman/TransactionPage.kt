@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class TransactionPage : Fragment(R.layout.fragment_transaction_page) {
+class TransactionPage : Fragment(R.layout.fragment_transaction_page), TransactionAdapter.EditTransactionListener {
     val db by lazy { TransactionDB(requireContext()) }
 
     override fun onCreateView(
@@ -64,7 +64,7 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page) {
 
             Log.d("TransactionPage", "transactions: $transactions")
 
-            recyclerView.adapter = TransactionAdapter(transactions)
+            recyclerView.adapter = TransactionAdapter(transactions, this@TransactionPage)
             Log.d("TransactionPage", "recyclerView: ${recyclerView.adapter}")
         }
 
@@ -92,5 +92,23 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page) {
         val str = this.toString()
         val regex = "(\\d)(?=(\\d{3})+\$)".toRegex()
         return str.replace(regex, "\$1.")
+    }
+
+    override fun onEditTransaction(transactionId: Int) {
+        // Handle the edit transaction action here
+        // For example, navigate to the EditPage fragment passing the transactionId
+        val fragment = EditPage()
+
+        // Pass transactionId to EditPage fragment
+        val bundle = Bundle().apply {
+            putInt("transactionId", transactionId)
+        }
+        fragment.arguments = bundle
+
+        // Perform fragment transaction
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

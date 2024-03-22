@@ -11,14 +11,16 @@ import androidx.room.*
 interface TransactionDao {
     @Insert
     suspend fun addTransaction(transaction: Transaction)
+    @Query ("SELECT * FROM transactions WHERE id=:idTrans")
+    suspend fun findIdTrans(idTrans: Int):Transaction?
 
     @Update
     suspend fun updateTransaction(transaction: Transaction)
 
-    @Delete
-    suspend fun deleteTransaction(transaction: Transaction)
-
     @Query("SELECT * FROM transactions ORDER BY createdAt DESC")
     fun getAllTransactions(): List<Transaction>
+
+    @Delete
+    suspend fun deleteTransaction(transaction: Transaction)
 
 }

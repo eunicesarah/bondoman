@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -14,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.room.Transaction
 
 class TransactionAdapter(
-    private val list : List<Transaction>
+    private val list : List<Transaction>,
+    private val editTransactionListener: EditTransactionListener
 ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -45,6 +47,11 @@ class TransactionAdapter(
             holder.itemView.context.startActivity(intent)
             Log.d("TransactionAdapter", "location: ${transaction.field_lokasi}")
         }
+
+        holder.editButton.setOnClickListener {
+            editTransactionListener.onEditTransaction(transaction.id)
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +66,7 @@ class TransactionAdapter(
         val date = view.findViewById<TextView>(R.id.date_transaction)
         val location = view.findViewById<TextView>(R.id.location_transaction)
         val button = view.findViewById<LinearLayout>(R.id.linear_layout_transaction)
+        val editButton = view.findViewById<Button>(R.id.edit_button)
     }
 
     fun Int.convert(): String {
@@ -66,5 +74,9 @@ class TransactionAdapter(
         val regex = "(\\d)(?=(\\d{3})+\$)".toRegex()
         return str.replace(regex, "\$1.")
     }
+    interface EditTransactionListener {
+        fun onEditTransaction(transactionId: Int)
+    }
+
 
 }

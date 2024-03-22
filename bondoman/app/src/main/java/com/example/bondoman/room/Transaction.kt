@@ -13,13 +13,13 @@ data class Transaction(
     @NonNull
     val email: String,
     @NonNull
-    val field_judul: String,
+    var field_judul: String,
     @NonNull
-    val field_nominal: String,
+    var field_nominal: String,
     @NonNull
     val field_kategori: String,
     @NonNull
-    val field_lokasi: String,
+    var field_lokasi: String,
     @NonNull
     val createdAt: String
 )
