@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HeaderTransaction">
+
+    <TextView
+        android:id="@+id/header_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tumbas_header"
+        android:fontFamily="@font/font_poppins"
+        android:textColor="@color/secondary"
+        style="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="70sp"
+        android:layout_marginBottom="10dp"
+        android:textSize="32sp"/>
+</FrameLayout>

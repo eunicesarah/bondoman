@@ -25,4 +25,9 @@
 
     <string name="kategori_pengeluaran">Pengeluaran</string>
     <string name="kategori_pemasukan">Pemasukan</string>
+    <string name="scan_header">SCAN</string>
+    <string name="tumbas_header">TUMBAS</string>
+    <string name="graf_header">GRAF</string>
+    <string name="settings_header">PENATANAN</string>
+
 </resources>

@@ -34,10 +34,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.scan_cam -> replaceFragment(ScanPage())
-                R.id.graph -> replaceFragment(GraphPage())
-                R.id.settings -> replaceFragment(SettingsPage())
-                R.id.bill -> replaceFragment(TransactionPage())
+                R.id.scan_cam -> replaceFragment(ScanPage(), HeaderScan())
+                R.id.graph -> replaceFragment(GraphPage(), HeaderGraf())
+                R.id.settings -> replaceFragment(SettingsPage(), HeaderSettings())
+                R.id.bill -> replaceFragment(TransactionPage(), HeaderTransaction())
             }
             true
         }
@@ -60,9 +60,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment, header: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_layout, fragment)
+            .commit()
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.header_layout, header)
             .commit()
     }
 }
