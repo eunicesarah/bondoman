@@ -1,27 +1,17 @@
 package com.example.bondoman
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.bondoman.databinding.ActivityMainBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.bondoman.retrofit.Retrofit
-import com.example.bondoman.retrofit.endpoint.EndpointCheckExpiry
-import com.example.bondoman.retrofit.request.CheckExpiryRequest
-import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
-import com.example.bondoman.room.TransactionDao
-import com.example.bondoman.utils.AuthManager
+import com.example.bondoman.utils.CheckExpiryToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val serviceIntent = Intent(this, CheckExpiryToken::class.java)
+        startService(serviceIntent)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

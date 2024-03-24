@@ -41,7 +41,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".utils.BackgroundService" />
+        <service android:name=".utils.CheckExpiryToken"
+            android:enabled="true"
+            android:exported="false"  />
     </application>
 
 </manifest>
