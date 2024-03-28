@@ -289,7 +289,7 @@ class ScanPage : Fragment() {
                         payloadJson.optString("nim"),
                         item.name,
                         item.price.toString(),
-                        item.qty.toString(),
+                        "Pengeluaran",
                         "",
                         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())
                     )
