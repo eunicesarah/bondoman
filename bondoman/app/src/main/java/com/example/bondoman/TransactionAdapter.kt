@@ -51,7 +51,12 @@ class TransactionAdapter(
         if (transaction.field_kategori == "Pemasukan") holder.category.text = "UPAH"
         else holder.category.text = "TUMBAS"
 
-        if (transaction.field_lokasi == "") holder.locLayout.visibility = View.GONE
+        if (transaction.field_lokasi == "") {
+            holder.locLayout.visibility = View.GONE
+        } else {
+            holder.locLayout.visibility = View.VISIBLE
+            holder.location.text = transaction.field_lokasi
+        }
 
         holder.button.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=${transaction.field_lokasi}"))
