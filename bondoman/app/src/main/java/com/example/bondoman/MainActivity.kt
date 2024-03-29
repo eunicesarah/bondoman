@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private val db by lazy { TransactionDB(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         val serviceIntent = Intent(this, CheckExpiryToken::class.java)
         startService(serviceIntent)
+
+        replaceFragment(TransactionPage(), HeaderTransaction())
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, header: Fragment) {
+    fun replaceFragment(fragment: Fragment, header: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_layout, fragment)
             .commit()
@@ -61,5 +63,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.header_layout, header)
             .commit()
+
+        supportFragmentManager.executePendingTransactions()
     }
 }

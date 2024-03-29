@@ -301,10 +301,16 @@ class ScanPage : Fragment() {
 
             Toast.makeText(requireContext(), "Berhasil menambahkan ${count} transaksi", Toast.LENGTH_SHORT).show()
 
-            // return to transaction page
-            val fragment = TransactionPage()
-            val transaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.frame_layout, fragment).commit()
+            val transactionPage = TransactionPage()
+            val headerTransaction = HeaderTransaction()
+
+            val mainActivity = activity as? MainActivity
+            if (mainActivity != null) {
+                mainActivity.binding.bottomNavigationView.selectedItemId = R.id.bill
+                mainActivity.replaceFragment(transactionPage, headerTransaction)
+            } else {
+                Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")
+            }
         }
     }
 
