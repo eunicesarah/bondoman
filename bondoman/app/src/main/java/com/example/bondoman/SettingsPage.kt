@@ -3,6 +3,7 @@ package com.example.bondoman
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
@@ -20,34 +22,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
+import java.util.Base64
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsPage.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingsPage : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     val db by lazy { TransactionDB(requireContext()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-
     }
 
     override fun onCreateView(
@@ -63,26 +48,6 @@ class SettingsPage : Fragment() {
         initAction()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsPage.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingsPage().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
     fun initAction(){
         val logout_button = view?.findViewById<Button>(R.id.logout_button)
         logout_button?.setOnClickListener {
@@ -94,7 +59,7 @@ class SettingsPage : Fragment() {
         }
         val send_button = view?.findViewById<Button>(R.id.send_button)
         send_button?.setOnClickListener {
-            sendMail()
+            export(".xlsx", true)
         }
     }
 
@@ -112,32 +77,59 @@ class SettingsPage : Fragment() {
         dialog.show()
 
         xlsButton.setOnClickListener {
-            export(".xls")
+            export(".xls", false)
             dialog.dismiss()
         }
 
         xlsxButton.setOnClickListener {
-            export(".xlsx")
+            export(".xlsx", false)
             dialog.dismiss()
         }
     }
 
-    fun sendMail() {
-        TODO("Not yet implemented")
+    private fun sendMail(fileUri: Uri) {
+        val token = AuthManager.getToken(requireContext()).toString().split('.')
+        Log.d("Send Mail", "token $token")
+        if (token.size != 3) {
+            Log.e("Send Mail", "Invalid token format")
+            return
+        }
+        val payload = Base64.getUrlDecoder().decode(token[1])
+        val payloadJson = JSONObject(String(payload, Charsets.UTF_8))
+        val nim = payloadJson.optString("nim")
+        Log.d("Send Mail", "nim $nim")
+        val email = "${nim}@std.stei.itb.ac.id"
+        Log.d("Send Mail", "email $email")
+
+        val subject = "Berikut merupakan data transaksi terbaru hingga saat ini."
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_SUBJECT, "Bondoman: Data Transaksi")
+            putExtra(Intent.EXTRA_TEXT, subject)
+            putExtra(Intent.EXTRA_STREAM, fileUri)
+        }
+
+        Log.d("Send Mail", "Intent: $intent")
+
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
-    fun export(format: String){
+    private fun export(format: String, send: Boolean){
         lifecycleScope.launch {
             val transactions = withContext(Dispatchers.IO) {
                 db.transactionDao().getAllTransactions()
             }
-            saveTransactionsToExcel(transactions, requireContext(), format)
+            saveTransactionsToExcel(transactions, requireContext(), format, send)
 
         }
     }
 
-    fun saveTransactionsToExcel(transactions: List<Transaction>, context: Context, format: String) {
-        Toast.makeText(context, "Menyimpan data...", Toast.LENGTH_SHORT).show()
+    private fun saveTransactionsToExcel(transactions: List<Transaction>, context: Context, format: String, send: Boolean) {
+        Toast.makeText(context, "Memproses data transaksi...", Toast.LENGTH_SHORT).show()
         val workbook = XSSFWorkbook()
         val sheets = workbook.createSheet("Transactions")
 
@@ -160,7 +152,6 @@ class SettingsPage : Fragment() {
             row.createCell(3).setCellValue(transaction.field_nominal)
             row.createCell(4).setCellValue(transaction.field_kategori)
             row.createCell(5).setCellValue(transaction.field_lokasi)
-
         }
 
         // Auto-size columns
@@ -183,8 +174,15 @@ class SettingsPage : Fragment() {
         workbook.close()
         fileOutputStream.close()
 
-        Toast.makeText(context, "Data berhasil disimpan di ${file.absolutePath}", Toast.LENGTH_LONG).show()
-        Log.d("SettingsPage", "Data berhasil disimpan di ${file.absolutePath}")
+        if (send) {
+            val fileUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", file)
+            Log.d("Send Mail", "File URI: $fileUri")
+            sendMail(fileUri)
+        } else {
+            val path = "Documents/Bondoman-Transaction/$title"
+            Toast.makeText(context, "Tersimpan di $path", Toast.LENGTH_LONG).show()
+            Log.d("Save File", "Data berhasil disimpan di ${file.absolutePath}")
+        }
 
     }
 
