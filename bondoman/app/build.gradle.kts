@@ -67,4 +67,5 @@ dependencies {
     implementation ("androidx.camera:camera-extensions:1.3.2")
     implementation ("org.apache.poi:poi:5.2.3")
     implementation ("org.apache.poi:poi-ooxml:5.2.3")
+    implementation ("com.github.Philjay:MPAndroidChart:v3.1.0")
 }

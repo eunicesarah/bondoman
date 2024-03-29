@@ -36,6 +36,7 @@
             android:text="Arta Sampeyan"
             android:textSize="14sp"
             android:textStyle="normal|bold"
+            android:textColor="@color/secondary"
             />
 
         <TextView
@@ -46,6 +47,7 @@
             tools:text="IDR100.000"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/secondary"
             />
     </LinearLayout>
 
