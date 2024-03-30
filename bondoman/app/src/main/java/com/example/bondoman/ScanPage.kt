@@ -2,8 +2,11 @@ package com.example.bondoman
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -245,8 +248,7 @@ class ScanPage : Fragment() {
                             cleanedItems.add(newItem)
                         }
                         addToDatabase(cleanedItems)
-
-                    }
+                }
                 }
                 else {
                     val errorBody = response.errorBody()?.string()
@@ -318,6 +320,8 @@ class ScanPage : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
     companion object {
         private val REQUIRED_PERMISSIONS =

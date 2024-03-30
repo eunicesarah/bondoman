@@ -15,6 +15,8 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.bondoman.databinding.ActivityMainBinding
 import androidx.fragment.app.Fragment
 import com.example.bondoman.room.TransactionDB
+import com.example.bondoman.room.TransactionRepository
+import com.example.bondoman.room.TransactionRepositoryImplement
 import com.example.bondoman.utils.AuthManager
 import com.example.bondoman.utils.CheckExpiryToken
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +28,7 @@ import java.util.Base64
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val db by lazy { TransactionDB(this) }
-
+    private lateinit var transactionRepository: TransactionRepository
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -88,9 +90,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadTransactions() {
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), this)
+        transactionRepository.setNIM()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val transc = db.transactionDao().getAllTransactions()
+                val transc = transactionRepository.getAllTransactions()
                 Log.d("MainActivity", "dbResponse: $transc")
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error loading transactions: ${e.message}")
@@ -99,9 +103,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadCachedTransactions() {
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), this)
+        transactionRepository.setNIM()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val transc = db.transactionDao().getAllTransactions()
+                val transc = transactionRepository.getAllTransactions()
                 Log.d("MainActivity", "Cached transactions: $transc")
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error loading cached transactions: ${e.message}")

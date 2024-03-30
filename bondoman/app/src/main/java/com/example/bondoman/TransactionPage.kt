@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
+import com.example.bondoman.room.TransactionRepository
+import com.example.bondoman.room.TransactionRepositoryImplement
 import com.example.bondoman.utils.AuthManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +34,8 @@ import java.util.Locale
 
 class TransactionPage : Fragment(R.layout.fragment_transaction_page), TransactionAdapter.EditTransactionListener {
     val db by lazy { TransactionDB(requireContext()) }
+    private lateinit var transactionRepository: TransactionRepository
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,13 +57,17 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
 
         val recyclerViewHeight = (0.6 * height).toInt()
 
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
+        transactionRepository.setNIM()
+
+
         recyclerView.layoutParams.height = recyclerViewHeight
         recyclerView.requestLayout()
 
         lifecycleScope.launch {
             if (isNetworkAvailable()) {
                 val transactions = withContext(Dispatchers.IO) {
-                    db.transactionDao().getAllTransactions()
+                    transactionRepository.getAllTransactions()
                 }
 
                 val balance = saldo(transactions)
@@ -138,10 +146,12 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
     }
 
     fun loadCachedTransactions() {
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
+        transactionRepository.setNIM()
         lifecycleScope.launch {
             try {
                 val transactions = withContext(Dispatchers.IO) {
-                    db.transactionDao().getAllTransactions()
+                    transactionRepository.getAllTransactions()
                 }
                 Log.d("TransactionPage", "Cached transactions: $transactions")
 

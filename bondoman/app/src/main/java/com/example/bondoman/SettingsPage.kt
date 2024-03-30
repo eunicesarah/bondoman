@@ -17,6 +17,8 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
+import com.example.bondoman.room.TransactionRepository
+import com.example.bondoman.room.TransactionRepositoryImplement
 import com.example.bondoman.utils.AuthManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +32,8 @@ import java.util.Base64
 
 class SettingsPage : Fragment() {
     val db by lazy { TransactionDB(requireContext()) }
+    private lateinit var transactionRepository: TransactionRepository
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,9 +123,11 @@ class SettingsPage : Fragment() {
     }
 
     private fun export(format: String, send: Boolean){
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
+        transactionRepository.setNIM()
         lifecycleScope.launch {
             val transactions = withContext(Dispatchers.IO) {
-                db.transactionDao().getAllTransactions()
+                transactionRepository.getAllTransactions()
             }
             saveTransactionsToExcel(transactions, requireContext(), format, send)
 

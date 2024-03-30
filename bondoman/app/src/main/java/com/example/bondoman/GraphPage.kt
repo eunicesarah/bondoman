@@ -10,6 +10,8 @@ import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.TransactionDB
+import com.example.bondoman.room.TransactionRepository
+import com.example.bondoman.room.TransactionRepositoryImplement
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -23,6 +25,8 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
     val db by lazy { TransactionDB(requireContext()) }
 
     lateinit var PieChart: GraphPage
+    private lateinit var transactionRepository: TransactionRepository
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +48,12 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
         pieChart.legend.isEnabled = false
 
         progressBarTumbas.max = 100
+        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
+        transactionRepository.setNIM()
 
         lifecycleScope.launch{
             val transaction = withContext(Dispatchers.IO){
-                db.transactionDao().getAllTransactions()
+                transactionRepository.getAllTransactions()
             }
             val entries = ArrayList<PieEntry>()
             transaction.forEach{
