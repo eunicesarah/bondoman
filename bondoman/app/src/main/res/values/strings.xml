@@ -13,7 +13,7 @@
     <string name="defCategory">Category</string>
 
 
-    <!--    Tambah Transaksi-->
+    <!--    Tambah Transaksi    -->
     <string name="label_judul">Judhul</string>
     <string name="label_nominal">Rega</string>
     <string name="label_kategori">Bab</string>
@@ -26,8 +26,35 @@
     <string name="kategori_pengeluaran">Pengeluaran</string>
     <string name="kategori_pemasukan">Pemasukan</string>
     <string name="scan_header">SCAN</string>
+    <string name="twibbon_header">TWIBBON</string>
     <string name="tumbas_header">TUMBAS</string>
     <string name="graf_header">GRAF</string>
     <string name="settings_header">PENATANAN</string>
+
+    <!--    Twibbon Page    -->
+    <string name="twibbon_after_take">retake? click the shutter button again</string>
+    <string name="twibbon_back">Back to scan page</string>
+    <string name="twibbon_frame">Twibbon frame</string>
+    <string name="twibbon_take_picture">Take picture</string>
+    <string name="twibbon_flip_camera">Flip camera</string>
+
+    <!--    Scan Page    -->
+    <string name="scan_take_picture">Take picture</string>
+    <string name="scan_to_twibbon_1">Looking for twibbon?</string>
+    <string name="scan_to_twibbon_2">click here</string>
+    <string name="select_photos">"  select photos  "</string>
+
+    <!--    Item Transaction    -->
+    <string name="item_transaction_edit">Edit</string>
+    <string name="item_transaction_map">Map icon</string>
+    <string name="item_transaction_judul">Kerupuk Kulit</string>
+    <string name="item_transaction_price">IDR5.000</string>
+    <string name="item_transaction_date">14/03/2024</string>
+    <string name="item_transaction_location">Seno Medika</string>
+    <string name="item_transaction_logo">Tumbas or upah logo</string>
+
+    <!--    Transaction Page    -->
+    <string name="transaction_balance">Arta Sampeyan</string>
+    <string name="transaction_add">+</string>
 
 </resources>
