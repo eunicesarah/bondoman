@@ -1,6 +1,7 @@
 package com.example.bondoman
 
 import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -55,32 +56,8 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
             val transaction = withContext(Dispatchers.IO){
                 transactionRepository.getAllTransactions()
             }
-            val entries = ArrayList<PieEntry>()
-            transaction.forEach{
-                transaction ->
-                entries.add(PieEntry(transaction.field_nominal.toFloat(), transaction.field_kategori))
-            }
 
-            val dataSet = PieDataSet(entries, "Transaction Categories")
-            val categoryColors = mapOf(
-                "Pengeluaran" to ContextCompat.getColor(requireContext(), R.color.tumbas),
-                "Pemasukan" to ContextCompat.getColor(requireContext(), R.color.upah)
-            )
-            dataSet.colors = entries.map { entry->
-                categoryColors[entry.label] ?: R.color.white
-            }
-            dataSet.sliceSpace = 3f
-            dataSet.selectionShift = 5f
-
-            val data = PieData(dataSet)
-            data.setValueTextSize(10f)
-            data.setValueTextColor(R.color.white)
-
-            pieChart.data = data
-            pieChart.animateXY(1000, 1000)
-
-            pieChart.invalidate()
-
+            //count for total pengeluaran and masukan
             val totalPengeluaran = transaction.filter { it.field_kategori == "Pengeluaran" }
                 .sumByDouble { it.field_nominal.toDouble() }
             val totalPemasukan = transaction.filter { it.field_kategori == "Pemasukan" }
@@ -88,6 +65,35 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
             val totalTransactions = transaction.sumByDouble { it.field_nominal.toDouble() }
             val pemasukanPrecentage = (totalPemasukan/totalTransactions * 100).toInt()
             val pengeluaranPrecentage = (totalPengeluaran/totalTransactions * 100).toInt()
+
+            //make pie chart
+            val entries = ArrayList<PieEntry>()
+            val dataSet = PieDataSet(entries, "Transaction Categories")
+
+            entries.add(PieEntry(totalPengeluaran.toFloat(), "Pengeluaran"))
+            entries.add(PieEntry(totalPemasukan.toFloat(), "Pemasukan"))
+
+            val categoryColors = mapOf(
+                "Pengeluaran" to ContextCompat.getColor(requireContext(), R.color.tumbas),
+                "Pemasukan" to ContextCompat.getColor(requireContext(), R.color.upah)
+            )
+
+            dataSet.colors = entries.map { entry->
+                categoryColors[entry.label] ?: R.color.white
+            }
+            dataSet.sliceSpace =3f
+            dataSet.selectionShift = 3f
+
+            val data = PieData(dataSet)
+            data.setValueTextSize(0f)
+            data.setValueTextColor(Color.TRANSPARENT)
+
+            pieChart.data = data
+            pieChart.animateXY(1000, 1000)
+
+            pieChart.invalidate()
+
+            //make the progressbar
 
             ObjectAnimator.ofInt(progressBarTumbas, "progress", pengeluaranPrecentage).apply {
                 duration = 1000
