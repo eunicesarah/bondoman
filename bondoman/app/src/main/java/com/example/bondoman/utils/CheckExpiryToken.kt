@@ -49,7 +49,7 @@ class CheckExpiryToken:Service() {
                         val exp = dataExpiry.exp
                         val currentTime = System.currentTimeMillis()/1000
                         if (currentTime>exp){
-                            Handler(Looper.getMainLooper()).post { showToast("Token is expired. Please log in.") }
+                            Handler(Looper.getMainLooper()).post { showToast("Token kadaluwarsa, tulung mlebu meneh.") }
                             AuthManager.deleteToken(this@CheckExpiryToken)
                             val intent = Intent(this@CheckExpiryToken, LoginPage::class.java)
                             intent.flags =
@@ -63,7 +63,7 @@ class CheckExpiryToken:Service() {
                     intent.flags =
                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    showToast("Token is expired. Please log in.")
+                    showToast("Token kadaluwarsa, tulung mlebu meneh.")
                 }
             }
             catch (e: Exception){

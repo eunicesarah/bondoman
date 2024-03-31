@@ -70,12 +70,12 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
             val entries = ArrayList<PieEntry>()
             val dataSet = PieDataSet(entries, "Transaction Categories")
 
-            entries.add(PieEntry(totalPengeluaran.toFloat(), "Pengeluaran"))
-            entries.add(PieEntry(totalPemasukan.toFloat(), "Pemasukan"))
+            entries.add(PieEntry(totalPengeluaran.toFloat(), "Tumbas"))
+            entries.add(PieEntry(totalPemasukan.toFloat(), "Upah"))
 
             val categoryColors = mapOf(
-                "Pengeluaran" to ContextCompat.getColor(requireContext(), R.color.tumbas),
-                "Pemasukan" to ContextCompat.getColor(requireContext(), R.color.upah)
+                "Tumbas" to ContextCompat.getColor(requireContext(), R.color.tumbas),
+                "Upah" to ContextCompat.getColor(requireContext(), R.color.upah)
             )
 
             dataSet.colors = entries.map { entry->

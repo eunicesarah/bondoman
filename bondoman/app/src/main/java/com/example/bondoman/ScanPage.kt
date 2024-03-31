@@ -91,7 +91,7 @@ class ScanPage : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Lagi diamot...", Toast.LENGTH_SHORT).show()
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
@@ -138,11 +138,11 @@ class ScanPage : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e("Camera", "Photo capture failed: ${exc.message}", exc)
-                    Toast.makeText(requireContext(), "Photo capture failed: ${exc.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Jepret foto gagal: ${exc.message}", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Lagi diamot...", Toast.LENGTH_SHORT).show()
                     val savedUri = output.savedUri ?: MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     if (savedUri != MediaStore.Images.Media.EXTERNAL_CONTENT_URI) {
                         val contentResolver = requireContext().contentResolver
@@ -206,7 +206,7 @@ class ScanPage : Fragment() {
                 startCamera()
             } else {
                 Log.d("Permission", "Permissions not granted by the user.")
-                Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Idin ora diwenehake dening pangguna.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -262,7 +262,7 @@ class ScanPage : Fragment() {
             }
             catch (e: java.lang.Exception){
                 Log.e("Scan", "Error: ${e.message}")
-                Toast.makeText(requireContext(), "An error occured: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Ana sing salah: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -302,7 +302,7 @@ class ScanPage : Fragment() {
                 count++
             }
 
-            Toast.makeText(requireContext(), "Berhasil menambahkan ${count} transaksi", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Wis isa nambah ${count} tumbas", Toast.LENGTH_SHORT).show()
 
             val transactionPage = TransactionPage()
             val headerTransaction = HeaderTransaction()

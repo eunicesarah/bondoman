@@ -64,7 +64,7 @@ class LoginPage : AppCompatActivity() {
            }
            catch (e:Exception){
                Log.e("Login", "Error: ${e.message}")
-               showToast("An error occured: ${e.message}")
+               showToast("Ana sing salah: ${e.message}")
            }
        }
 

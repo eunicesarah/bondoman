@@ -93,7 +93,7 @@ class TwibbonPage : Fragment() {
                 startCamera()
             } else {
                 Log.d("Permission", "Permissions not granted by the user.")
-                Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Idin ora diwenehake dening pangguna.", Toast.LENGTH_SHORT).show()
             }
         }
     }

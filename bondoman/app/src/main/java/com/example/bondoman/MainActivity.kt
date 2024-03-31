@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         if (networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
             loadTransactions()
         } else {
-            Toast.makeText(this, "Your connection is lost. Showing cached transactions.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Koneksimu ilang. Nuduhake cache tumbas.", Toast.LENGTH_SHORT).show()
             loadCachedTransactions()
         }
     }

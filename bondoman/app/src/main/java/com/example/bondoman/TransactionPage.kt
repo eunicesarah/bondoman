@@ -84,7 +84,7 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
                 recyclerView.adapter = TransactionAdapter(transactions, this@TransactionPage)
                 Log.d("TransactionPage", "recyclerView: ${recyclerView.adapter}")
             } else {
-                Toast.makeText(requireContext(), "Your connection is lost. Showing cached transactions.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Koneksimu ilang. Nuduhake cahce tumbas.", Toast.LENGTH_SHORT).show()
                 loadCachedTransactions()
             }
         }
@@ -95,7 +95,7 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
                 val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
                 transaction.replace(R.id.frame_layout, fragment).commit()
             } else {
-                Toast.makeText(requireContext(), "Your connection is lost. Cannot add transaction.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Koneksimu ilang. Ora isa nambahke tumbas.", Toast.LENGTH_SHORT).show()
             }
         }
     }

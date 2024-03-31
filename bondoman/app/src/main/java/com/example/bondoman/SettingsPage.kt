@@ -156,7 +156,7 @@ class SettingsPage : Fragment() {
     }
 
     private fun saveTransactionsToExcel(transactions: List<Transaction>, context: Context, format: String, send: Boolean) {
-        Toast.makeText(context, "Memproses data transaksi...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Mroses data tumbas...", Toast.LENGTH_SHORT).show()
         val workbook = XSSFWorkbook()
         val sheets = workbook.createSheet("Transactions")
 
@@ -207,7 +207,7 @@ class SettingsPage : Fragment() {
             sendMail(fileUri)
         } else {
             val path = "Documents/Bondoman-Transaction/$title"
-            Toast.makeText(context, "Tersimpan di $path", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Disimpen ing $path", Toast.LENGTH_LONG).show()
             Log.d("Save File", "Data berhasil disimpan di ${file.absolutePath}")
         }
 

@@ -107,7 +107,7 @@ private lateinit var db: TransactionDB
                         db.transactionDao().updateTransaction(transaction)
 
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), "Transaksi berhasil diubah", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Tumbas wis diganti", Toast.LENGTH_SHORT).show()
                             navigateBackToTransactionPage()
                         }
                     } else {
@@ -116,7 +116,7 @@ private lateinit var db: TransactionDB
                 }
             } else {
                 Log.d("EditPage", "Network not available. Cannot update transaction.")
-                Toast.makeText(requireContext(), "Cek jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Prikso jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -128,7 +128,7 @@ private lateinit var db: TransactionDB
                     if (transaction != null) {
                         db.transactionDao().deleteTransaction(transaction)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), "Transaksi berhasil dihapus", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Tumbas wis dibusak", Toast.LENGTH_SHORT).show()
                             navigateBackToTransactionPage()
                         }
                     } else {
@@ -137,7 +137,7 @@ private lateinit var db: TransactionDB
                 }
             } else {
                 Log.d("EditPage", "Network not available. Cannot delete transaction.")
-                Toast.makeText(requireContext(), "Cek jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Prikso jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
             }
         }
 
