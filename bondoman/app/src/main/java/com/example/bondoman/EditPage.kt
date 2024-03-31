@@ -31,6 +31,7 @@ class EditPage : Fragment(R.layout.fragment_edit_page)  {
     private lateinit var field_kategori: RadioGroup
     private lateinit var button_pemasukan: RadioButton
     private lateinit var button_pengeluaran: RadioButton
+    private lateinit var back_edit: Button
 //    private val db by lazy { TransactionDB(requireContext()) }
 private lateinit var db: TransactionDB
     private var idTrans = 0
@@ -58,6 +59,7 @@ private lateinit var db: TransactionDB
         button_pemasukan = view.findViewById(R.id.button_pemasukan)
         button_pengeluaran = view.findViewById(R.id.button_pengeluaran)
         field_kategori = view.findViewById(R.id.field_kategori)
+        back_edit = view.findViewById(R.id.back_edit)
 
         // Retrieve transaction ID from arguments
         idTrans = requireArguments().getInt("transactionId", 0)
@@ -138,6 +140,12 @@ private lateinit var db: TransactionDB
                 Toast.makeText(requireContext(), "Cek jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
             }
         }
+
+        back_edit.setOnClickListener {
+            navigateBackToTransactionPage()
+        }
+
+
     }
     private fun navigateBackToTransactionPage() {
         val transactionPageFragment = TransactionPage()

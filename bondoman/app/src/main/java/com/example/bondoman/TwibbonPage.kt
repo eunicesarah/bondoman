@@ -59,16 +59,16 @@ class TwibbonPage : Fragment() {
         }
 
 
-        binding.backButton.setOnClickListener {
-            val scanPage = ScanPage()
-            val headerTwibbon = HeaderScan()
-            val mainActivity = activity as? MainActivity
-            if (mainActivity != null) {
-                mainActivity.replaceFragment(scanPage, headerTwibbon)
-            } else {
-                Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")
-            }
-        }
+//        binding.backButton.setOnClickListener {
+//            val scanPage = ScanPage()
+//            val headerTwibbon = HeaderScan()
+//            val mainActivity = activity as? MainActivity
+//            if (mainActivity != null) {
+//                mainActivity.replaceFragment(scanPage, headerTwibbon)
+//            } else {
+//                Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")
+//            }
+//        }
 
         binding.shutterButton.setOnClickListener {
             if (cameraOn){

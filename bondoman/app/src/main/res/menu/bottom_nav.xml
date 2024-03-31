@@ -24,4 +24,11 @@
         android:title="Settings"
         android:id="@+id/settings"
         android:icon="@drawable/baseline_settings_24"/>
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Twibbon"
+        android:id="@+id/twibbon"
+        android:icon="@drawable/baseline_camera_alt_24"/>
+
 </menu>

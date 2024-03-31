@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.graph -> replaceFragment(GraphPage(), HeaderGraf())
                 R.id.settings -> replaceFragment(SettingsPage(), HeaderSettings())
                 R.id.bill -> replaceFragment(TransactionPage(), HeaderTransaction())
+                R.id.twibbon -> replaceFragment(TwibbonPage(), HeaderTwibbon())
             }
             true
         }

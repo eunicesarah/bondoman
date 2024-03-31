@@ -82,16 +82,6 @@ class ScanPage : Fragment() {
             selectPhoto()
         }
 
-        binding.twibbonText.setOnClickListener {
-            val twibbonPage = TwibbonPage()
-            val headerTwibbon = HeaderScan()
-            val mainActivity = activity as? MainActivity
-            if (mainActivity != null) {
-                mainActivity.replaceFragment(twibbonPage, headerTwibbon)
-            } else {
-                Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")
-            }
-        }
     }
 
     private fun selectPhoto() {

@@ -52,6 +52,7 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
     private lateinit var field_nominal: EditText
     private lateinit var field_kategori: RadioGroup
     private lateinit var field_lokasi: EditText
+    private lateinit var back_add: Button
     val db by lazy { TransactionDB(requireContext()) }
 
     private val randomizeReceiver = RandomizeTransaction()
@@ -64,6 +65,7 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
         field_nominal = view.findViewById(R.id.field_nominal) as EditText
         field_kategori = view.findViewById(R.id.field_kategori) as RadioGroup
         field_lokasi = view.findViewById(R.id.field_lokasi) as EditText
+        back_add = view.findViewById(R.id.back_add)
 
         if (RandomizeTransaction.shouldRandomizePrice) field_nominal.setText(RandomizeTransaction.randomPrice.toString())
         setUpListener()
@@ -124,6 +126,13 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
                     e.printStackTrace()
                 }
             }
+        }
+
+        back_add.setOnClickListener {
+            val transactionPageFragment = TransactionPage()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, transactionPageFragment)
+                .commit()
         }
     }
 

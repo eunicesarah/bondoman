@@ -7,6 +7,16 @@
     android:background="@color/primary"
     tools:context=".AddTransactionPage">
 
+    <Button
+        android:id="@+id/back_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="70dp"
+        tools:ignore="MissingConstraints" />
+
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
