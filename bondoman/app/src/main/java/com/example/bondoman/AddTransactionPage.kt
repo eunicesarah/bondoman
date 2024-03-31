@@ -1,5 +1,9 @@
 package com.example.bondoman
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,12 +14,14 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.FragmentTransaction
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.bondoman.retrofit.Retrofit
 import com.example.bondoman.retrofit.endpoint.EndpointCheckExpiry
 import com.example.bondoman.retrofit.request.CheckExpiryRequest
 import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
 import com.example.bondoman.utils.AuthManager
+import com.example.bondoman.utils.RandomizeTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -48,6 +54,8 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
     private lateinit var field_lokasi: EditText
     val db by lazy { TransactionDB(requireContext()) }
 
+    private val randomizeReceiver = RandomizeTransaction()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,11 +65,25 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
         field_kategori = view.findViewById(R.id.field_kategori) as RadioGroup
         field_lokasi = view.findViewById(R.id.field_lokasi) as EditText
 
+        if (RandomizeTransaction.shouldRandomizePrice) field_nominal.setText(RandomizeTransaction.randomPrice.toString())
         setUpListener()
+        RandomizeTransaction.shouldRandomizePrice = false
     }
 //    fun showToast(message: String) {
 //        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 //    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(randomizeReceiver, IntentFilter("com.example.bondoman.RANDOMIZE_TRANSACTION"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(randomizeReceiver)
+    }
+
 
 
     private fun setUpListener() {
@@ -81,6 +103,7 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
 
                     val payloadJson = JSONObject(String(payload, StandardCharsets.UTF_8))
                     Log.d("Main Activity", "payloadJson ${payloadJson}")
+
                     db.transactionDao().addTransaction(
                         Transaction(
                             0,
@@ -102,6 +125,12 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Ensure the receiver is unregistered when the fragment is destroyed
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(randomizeReceiver)
     }
 
 }

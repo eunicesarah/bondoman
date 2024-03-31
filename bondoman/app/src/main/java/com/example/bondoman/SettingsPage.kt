@@ -3,6 +3,7 @@ package com.example.bondoman
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,11 +16,13 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.bondoman.room.Transaction
 import com.example.bondoman.room.TransactionDB
 import com.example.bondoman.room.TransactionRepository
 import com.example.bondoman.room.TransactionRepositoryImplement
 import com.example.bondoman.utils.AuthManager
+import com.example.bondoman.utils.RandomizeTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,10 +32,12 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Base64
+import kotlin.random.Random
 
 class SettingsPage : Fragment() {
     val db by lazy { TransactionDB(requireContext()) }
     private lateinit var transactionRepository: TransactionRepository
+    private val randomizeReceiver = RandomizeTransaction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +56,6 @@ class SettingsPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initAction()
     }
-
     fun initAction(){
         val logout_button = view?.findViewById<Button>(R.id.logout_button)
         logout_button?.setOnClickListener {
@@ -65,7 +69,24 @@ class SettingsPage : Fragment() {
         send_button?.setOnClickListener {
             export(".xlsx", true)
         }
+
+        val randomize_button = view?.findViewById<Button>(R.id.randomize_button)
+        randomize_button?.setOnClickListener {
+            randomizeTransaction()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(randomizeReceiver, IntentFilter("com.example.bondoman.RANDOMIZE_TRANSACTION"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(randomizeReceiver)
+    }
+
 
     private fun showExtDialog() {
         val builder = AlertDialog.Builder(requireContext())
@@ -202,4 +223,27 @@ class SettingsPage : Fragment() {
             activity?.finish()
         }
     }
+
+    fun randomizeTransaction(){
+        val randomPrice = Random.nextInt(10000)
+
+        val intent = Intent("com.example.bondoman.RANDOMIZE_TRANSACTION").apply {
+            putExtra("randomPrice", randomPrice)
+        }
+
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+        replaceFragment(AddTransactionPage(), HeaderTransaction())
+    }
+
+    fun replaceFragment(fragment: Fragment, headerFragment: Fragment) {
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_layout, fragment)
+        transaction.commit()
+
+        val headerTransaction = parentFragmentManager.beginTransaction()
+        headerTransaction.replace(R.id.header_layout, headerFragment)
+        headerTransaction.commit()
+    }
+
+
 }
