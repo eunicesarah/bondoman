@@ -2,11 +2,10 @@ package com.example.bondoman
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -51,6 +50,8 @@ class ScanPage : Fragment() {
     private val binding get() = _binding!!
     private var imageCapture: ImageCapture? = null
     private val PICK_IMAGE_REQUEST = 2
+    private var cameraOn = false
+    private var imagePath = ""
 
     val db by lazy { TransactionDB(requireContext()) }
 
@@ -65,9 +66,12 @@ class ScanPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.nextButton.visibility = View.GONE
+        binding.hasilFoto.visibility = View.GONE
+        binding.retryButton.visibility = View.GONE
         if (allPermissionsGranted()) {
             startCamera()
+            cameraOn = true
         } else {
             ActivityCompat.requestPermissions(
                 requireActivity(), REQUIRED_PERMISSIONS, 10
@@ -75,11 +79,32 @@ class ScanPage : Fragment() {
         }
 
         binding.shutterButton.setOnClickListener {
-            takePhoto()
+            if (cameraOn){
+                takePhoto()
+            } else {
+                cameraOn = true
+                binding.nextButton.visibility = View.GONE
+                binding.hasilFoto.visibility = View.GONE
+                binding.retryButton.visibility = View.GONE
+                binding.previewView.visibility = View.VISIBLE
+            }
         }
 
         binding.selectButton.setOnClickListener {
             selectPhoto()
+        }
+
+        binding.nextButton.setOnClickListener {
+            sendImageToAPI(imagePath)
+        }
+
+        binding.retryButton.setOnClickListener {
+            cameraOn = true
+            binding.nextButton.visibility = View.GONE
+            binding.hasilFoto.visibility = View.GONE
+            binding.retryButton.visibility = View.GONE
+            binding.previewView.visibility = View.VISIBLE
+            binding.shutterButton.visibility = View.VISIBLE
         }
 
     }
@@ -151,8 +176,18 @@ class ScanPage : Fragment() {
                             val dataIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
                             if (it.moveToFirst()) {
                                 val path = it.getString(dataIndex)
+                                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, savedUri)
+                                val rotationMat = Matrix().apply { postRotate(90f) }
+                                val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, rotationMat, true)
+                                binding.hasilFoto.setImageBitmap(rotatedBitmap)
+                                binding.hasilFoto.visibility = View.VISIBLE
+                                binding.previewView.visibility = View.GONE
+                                binding.nextButton.visibility = View.VISIBLE
+                                binding.retryButton.visibility = View.VISIBLE
+                                binding.shutterButton.visibility = View.GONE
+
+                                imagePath = path
                                 Log.d("Camera", "File path: $path")
-                                sendImageToAPI(path)
                             }
                         }
                         cursor?.close()
@@ -218,11 +253,12 @@ class ScanPage : Fragment() {
         val retro = Retrofit.getInstance().create(EndpointScan::class.java)
         Log.d("Scan", "pathname: ${pathname}")
 
-
         val file = File(pathname)
         val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file)
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
         Log.d("Scan", "filePart: ${filePart}")
+
+        Toast.makeText(requireContext(), "Mroses gambar..", Toast.LENGTH_SHORT).show()
 
         lifecycleScope.launch {
             try {
@@ -286,12 +322,13 @@ class ScanPage : Fragment() {
 
             var count = 0
             for (item in data) {
+                val price = item.price * item.qty
                 db.transactionDao().addTransaction(
                     Transaction(
                         0,
                         payloadJson.optString("nim"),
                         item.name,
-                        item.price.toString(),
+                        price.toString(),
                         "Pengeluaran",
                         "",
                         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())

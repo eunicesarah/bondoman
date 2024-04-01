@@ -47,6 +47,7 @@ class GraphPage : Fragment(R.layout.fragment_graph_page) {
 
         pieChart.setUsePercentValues(true)
         pieChart.legend.isEnabled = false
+        pieChart.description.isEnabled = false
 
         progressBarTumbas.max = 100
         transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
