@@ -51,6 +51,7 @@ private lateinit var db: TransactionDB
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         update_button = view.findViewById(R.id.update_button)
         delete_button = view.findViewById(R.id.delete_button)
         field_judul = view.findViewById(R.id.field_judul) as EditText
@@ -92,7 +93,6 @@ private lateinit var db: TransactionDB
 
     fun setUpListener(){
         update_button.setOnClickListener {
-            if (isNetworkAvailable()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val transaction = db.transactionDao().findIdTrans(idTrans)
                     if (transaction != null) {
@@ -112,17 +112,12 @@ private lateinit var db: TransactionDB
                         }
                     } else {
                         Log.d("EditPage", "Transaction not found for id: $idTrans")
-                    }
                 }
-            } else {
-                Log.d("EditPage", "Network not available. Cannot update transaction.")
-                Toast.makeText(requireContext(), "Prikso jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
             }
         }
 
 
         delete_button.setOnClickListener {
-            if (isNetworkAvailable()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val transaction = db.transactionDao().findIdTrans(idTrans)
                     if (transaction != null) {
@@ -135,11 +130,7 @@ private lateinit var db: TransactionDB
                         Log.d("EditPage", "Transaction not found for id: $idTrans")
                     }
                 }
-            } else {
-                Log.d("EditPage", "Network not available. Cannot delete transaction.")
-                Toast.makeText(requireContext(), "Prikso jaringan internet sampeyan", Toast.LENGTH_SHORT).show()
             }
-        }
 
         back_edit.setOnClickListener {
             navigateBackToTransactionPage()
@@ -152,12 +143,7 @@ private lateinit var db: TransactionDB
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.frame_layout, transactionPageFragment)
             .commit()    }
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.activeNetwork ?: return false
-        val networkInfo = connectivityManager.getNetworkCapabilities(networkCapabilities)
-        return networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
+
 
 
 

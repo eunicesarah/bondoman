@@ -1,5 +1,6 @@
 package com.example.bondoman
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.bondoman.databinding.ActivityMainBinding
@@ -27,12 +29,12 @@ import java.util.Base64
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    private val db by lazy { TransactionDB(this) }
-    private lateinit var transactionRepository: TransactionRepository
 
-    private val networkChangeReceiver = object : BroadcastReceiver() {
+    private val networkStatusReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            checkNetworkAndLoadTransactions()
+            if (!isNetworkAvailable()) {
+                showLostConnectionDialog()
+            }
         }
     }
 
@@ -48,7 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.scan_cam -> replaceFragment(ScanPage(), HeaderScan())
+                R.id.scan_cam -> {if(!isNetworkAvailable()){replaceFragment(NetworkLostPage(), HeaderScan())}
+                            else{replaceFragment(ScanPage(), HeaderScan())}}
                 R.id.graph -> replaceFragment(GraphPage(), HeaderGraf())
                 R.id.settings -> replaceFragment(SettingsPage(), HeaderSettings())
                 R.id.bill -> replaceFragment(TransactionPage(), HeaderTransaction())
@@ -58,62 +61,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val networkInfo = connectivityManager.getNetworkCapabilities(networkCapabilities)
+        return networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
     override fun onStart() {
         super.onStart()
-        registerNetworkChangeReceiver()
-        checkNetworkAndLoadTransactions()
+        registerReceiver(networkStatusReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     override fun onStop() {
         super.onStop()
-        unregisterNetworkChangeReceiver()
-    }
-
-    private fun registerNetworkChangeReceiver() {
-        registerReceiver(networkChangeReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-    }
-
-    private fun unregisterNetworkChangeReceiver() {
-        unregisterReceiver(networkChangeReceiver)
-    }
-
-    private fun checkNetworkAndLoadTransactions() {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.activeNetwork ?: return
-        val networkInfo = connectivityManager.getNetworkCapabilities(networkCapabilities)
-
-        if (networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-            loadTransactions()
-        } else {
-            Toast.makeText(this, "Koneksimu ilang. Nuduhake cache tumbas.", Toast.LENGTH_SHORT).show()
-            loadCachedTransactions()
-        }
-    }
-
-    private fun loadTransactions() {
-        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), this)
-        transactionRepository.setNIM()
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val transc = transactionRepository.getAllTransactions()
-                Log.d("MainActivity", "dbResponse: $transc")
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Error loading transactions: ${e.message}")
-            }
-        }
-    }
-
-    private fun loadCachedTransactions() {
-        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), this)
-        transactionRepository.setNIM()
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val transc = transactionRepository.getAllTransactions()
-                Log.d("MainActivity", "Cached transactions: $transc")
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Error loading cached transactions: ${e.message}")
-            }
-        }
+        unregisterReceiver(networkStatusReceiver)
     }
 
     fun replaceFragment(fragment: Fragment, header: Fragment) {
@@ -127,4 +89,21 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.executePendingTransactions()
     }
+
+    fun showLostConnectionDialog(){
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_network_lost, null)
+
+        val tryAgainButton = dialogView.findViewById<Button>(R.id.close_popup)
+        builder.setView(dialogView)
+
+        val dialog = builder.create()
+        dialog.show()
+
+        tryAgainButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
 }

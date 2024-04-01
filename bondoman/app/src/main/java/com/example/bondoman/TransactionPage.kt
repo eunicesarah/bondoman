@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -65,7 +66,6 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
         recyclerView.requestLayout()
 
         lifecycleScope.launch {
-            if (isNetworkAvailable()) {
                 val transactions = withContext(Dispatchers.IO) {
                     transactionRepository.getAllTransactions()
                 }
@@ -83,20 +83,12 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
 
                 recyclerView.adapter = TransactionAdapter(transactions, this@TransactionPage)
                 Log.d("TransactionPage", "recyclerView: ${recyclerView.adapter}")
-            } else {
-                Toast.makeText(requireContext(), "Koneksimu ilang. Nuduhake cahce tumbas.", Toast.LENGTH_SHORT).show()
-                loadCachedTransactions()
-            }
         }
 
         button.setOnClickListener {
-            if (isNetworkAvailable()) {
                 val fragment = AddTransactionPage()
                 val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
                 transaction.replace(R.id.frame_layout, fragment).commit()
-            } else {
-                Toast.makeText(requireContext(), "Koneksimu ilang. Ora isa nambahke tumbas.", Toast.LENGTH_SHORT).show()
-            }
         }
     }
     fun saldo(list : List<Transaction>) : Double {
@@ -137,48 +129,5 @@ class TransactionPage : Fragment(R.layout.fragment_transaction_page), Transactio
             .commit()
     }
 
-    fun isNetworkAvailable(): Boolean {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.activeNetwork ?: return false
-        val networkInfo = connectivityManager.getNetworkCapabilities(networkCapabilities)
-
-        return networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
-
-    fun loadCachedTransactions() {
-        transactionRepository = TransactionRepositoryImplement(db.transactionDao(), requireContext())
-        transactionRepository.setNIM()
-        lifecycleScope.launch {
-            try {
-                val transactions = withContext(Dispatchers.IO) {
-                    transactionRepository.getAllTransactions()
-                }
-                Log.d("TransactionPage", "Cached transactions: $transactions")
-
-                // Update UI on the main thread
-                withContext(Dispatchers.Main) {
-                    updateUI(transactions)
-                }
-            } catch (e: Exception) {
-                Log.e("TransactionPage", "Error loading cached transactions: ${e.message}")
-            }
-        }
-    }
-
-    private fun updateUI(transactions: List<Transaction>) {
-        val saldoText : TextView = requireView().findViewById<TextView>(R.id.duit)
-        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerViewTransaction)
-
-        val balance = saldo(transactions)
-        val text: String = if (balance >= 0) {
-            "Rp${balance.convert()}"
-        } else {
-            "-Rp${balance.convert().substring(1)}"
-        }
-
-        saldoText.text = text
-
-        recyclerView.adapter = TransactionAdapter(transactions, this@TransactionPage)
-    }
 
 }

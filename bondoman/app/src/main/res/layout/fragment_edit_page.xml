@@ -59,7 +59,7 @@
             android:background="@drawable/custom_field"
             android:fontFamily="@font/font_poppins"
             android:hint="Masukkan nominal transaksi Anda"
-            android:inputType="text"
+            android:inputType="number"
             android:padding="12dp"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -40,6 +40,7 @@ class SettingsPage : Fragment() {
     private val randomizeReceiver = RandomizeTransaction()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

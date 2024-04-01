@@ -56,5 +56,6 @@
     <!--    Transaction Page    -->
     <string name="transaction_balance">Arta Sampeyan</string>
     <string name="transaction_add">+</string>
+    <string name="lost_network">Koneksi sampeyan ilang</string>
 
 </resources>

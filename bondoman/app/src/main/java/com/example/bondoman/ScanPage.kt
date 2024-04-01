@@ -2,10 +2,13 @@ package com.example.bondoman
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -247,59 +250,71 @@ class ScanPage : Fragment() {
     }
 
     private fun sendImageToAPI(pathname: String) {
-        val token = getToken(requireContext())
-        Log.d("Scan", "Token: $token")
+        if(isNetworkAvailable()) {
 
-        val retro = Retrofit.getInstance().create(EndpointScan::class.java)
-        Log.d("Scan", "pathname: ${pathname}")
+            val token = getToken(requireContext())
+            Log.d("Scan", "Token: $token")
 
-        val file = File(pathname)
-        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file)
-        val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
-        Log.d("Scan", "filePart: ${filePart}")
+            val retro = Retrofit.getInstance().create(EndpointScan::class.java)
+            Log.d("Scan", "pathname: ${pathname}")
 
-        Toast.makeText(requireContext(), "Mroses gambar..", Toast.LENGTH_SHORT).show()
+            val file = File(pathname)
+            val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file)
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+            Log.d("Scan", "filePart: ${filePart}")
 
-        lifecycleScope.launch {
-            try {
-                val response = retro.scan("Bearer $token", filePart)
-                Log.d("Scan", "Response: ${response}")
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
+            Toast.makeText(requireContext(), "Mroses gambar..", Toast.LENGTH_SHORT).show()
+
+            lifecycleScope.launch {
+                try {
+                    val response = retro.scan("Bearer $token", filePart)
+                    Log.d("Scan", "Response: ${response}")
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
 //                        Log.d("Scan", "Success: ${data.items}")
 //                        Log.d("Scan", "Success: ${data}")
 
-                        val items = data.items.items
+                            val items = data.items.items
 //                        val singleItem = listOf(items)
-                        val cleanedItems = mutableListOf<Item>()
-                        for (item in items) {
-                            val name = item.name
+                            val cleanedItems = mutableListOf<Item>()
+                            for (item in items) {
+                                val name = item.name
 //                            Log.d("Scan", "Name: $name")
-                            val price = item.price
+                                val price = item.price
 //                            Log.d("Scan", "Price: $price")
-                            val qty = item.qty
+                                val qty = item.qty
 //                            Log.d("Scan", "Qty: $qty")
 
-                            val newItem = Item(name, qty, price)
-                            cleanedItems.add(newItem)
+                                val newItem = Item(name, qty, price)
+                                cleanedItems.add(newItem)
+                            }
+                            addToDatabase(cleanedItems)
                         }
-                        addToDatabase(cleanedItems)
-                }
-                }
-                else {
-                    val errorBody = response.errorBody()?.string()
-                    if (!errorBody.isNullOrEmpty()) {
-                        val errorMessage = errorBody
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        if (!errorBody.isNullOrEmpty()) {
+                            val errorMessage = errorBody
+                            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
-                }
 
+                } catch (e: java.lang.Exception) {
+                    Log.e("Scan", "Error: ${e.message}")
+                    Toast.makeText(
+                        requireContext(),
+                        "Ana sing salah: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-            catch (e: java.lang.Exception){
-                Log.e("Scan", "Error: ${e.message}")
-                Toast.makeText(requireContext(), "Ana sing salah: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+        }
+        else{
+            val networkLostFragment = NetworkLostPage()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, networkLostFragment)
+                .commit()
         }
 
     }
@@ -352,6 +367,13 @@ class ScanPage : Fragment() {
                 Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")
             }
         }
+    }
+    fun isNetworkAvailable(): Boolean {
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val networkInfo = connectivityManager.getNetworkCapabilities(networkCapabilities)
+
+        return networkInfo != null && networkInfo.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     override fun onDestroyView() {
