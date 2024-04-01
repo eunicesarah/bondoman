@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary"
     tools:context=".AddTransactionPage">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <Button
         android:id="@+id/back_add"
@@ -18,165 +22,166 @@
         tools:ignore="MissingConstraints" />
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/label_judul"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font_poppins"
-            android:text="@string/label_judul"
-            android:textColor="@color/secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/field_judul"
-            android:layout_width="350sp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_field"
-            android:fontFamily="@font/font_poppins"
-            android:hint="Masukkan judul transaksi Anda"
-            android:inputType="text"
-            android:padding="12sp"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_judul" />
-
-        <TextView
-            android:id="@+id/label_nominal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4sp"
-            android:fontFamily="@font/font_poppins"
-            android:text="@string/label_nominal"
-            android:textColor="@color/secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.051"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/field_judul" />
-
-        <EditText
-            android:id="@+id/field_nominal"
-            android:layout_width="350sp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_field"
-            android:fontFamily="@font/font_poppins"
-            android:hint="Masukkan judul nominal transaksi Anda"
-            android:inputType="text"
-            android:padding="12sp"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_nominal" />
-
-        <TextView
-            android:id="@+id/label_kategori"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4sp"
-            android:fontFamily="@font/font_poppins"
-            android:text="@string/label_kategori"
-            android:textColor="@color/secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/field_nominal" />
-
-        <RadioGroup
-            android:id="@+id/field_kategori"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/label_lokasi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8sp"
-            app:layout_constraintTop_toBottomOf="@+id/label_kategori">
-
-            <RadioButton
-                android:id="@+id/button_pengeluaran"
-                android:layout_width="wrap_content"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="2sp"
-                android:checked="true"
-                android:fontFamily="@font/font_poppins"
-                android:text="@string/kategori_pengeluaran"
-                android:textColor="@color/secondary"
-
-                />
-
-            <RadioButton
-                android:id="@+id/button_pemasukan"
-                android:layout_width="wrap_content"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="2sp"
-                android:checked="false"
-                android:fontFamily="@font/font_poppins"
-                android:text="@string/kategori_pemasukan"
-                android:textColor="@color/secondary"
-
-                />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/label_lokasi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4sp"
-            android:fontFamily="@font/font_poppins"
-            android:text="@string/label_lokasi"
-            android:textColor="@color/secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias="0.051"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/field_kategori" />
-
-        <EditText
-            android:id="@+id/field_lokasi"
-            android:layout_width="350sp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_field"
-            android:fontFamily="@font/font_poppins"
-            android:hint="Masukkan kategori Anda"
-            android:inputType="text"
-            android:padding="12sp"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_lokasi" />
+            app:layout_constraintTop_toBottomOf="@+id/back_add">
+
+            <TextView
+                android:id="@+id/label_judul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/label_judul"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.054"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/field_judul"
+                android:layout_width="350sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_field"
+                android:fontFamily="@font/font_poppins"
+                android:hint="Masukkan judul transaksi Anda"
+                android:inputType="text"
+                android:padding="12sp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_judul" />
+
+            <TextView
+                android:id="@+id/label_nominal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/label_nominal"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.051"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/field_judul" />
+
+            <EditText
+                android:id="@+id/field_nominal"
+                android:layout_width="350sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_field"
+                android:fontFamily="@font/font_poppins"
+                android:hint="Masukkan judul nominal transaksi Anda"
+                android:inputType="text"
+                android:padding="12sp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_nominal" />
+
+            <TextView
+                android:id="@+id/label_kategori"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/label_kategori"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/field_nominal" />
+
+            <RadioGroup
+                android:id="@+id/field_kategori"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8sp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/label_lokasi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_kategori">
+
+                <RadioButton
+                    android:id="@+id/button_pengeluaran"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="2sp"
+                    android:checked="true"
+                    android:fontFamily="@font/font_poppins"
+                    android:text="@string/kategori_pengeluaran"
+                    android:textColor="@color/secondary"
+
+                    />
+
+                <RadioButton
+                    android:id="@+id/button_pemasukan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="2sp"
+                    android:checked="false"
+                    android:fontFamily="@font/font_poppins"
+                    android:text="@string/kategori_pemasukan"
+                    android:textColor="@color/secondary"
+
+                    />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/label_lokasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/label_lokasi"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintHorizontal_bias="0.051"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/field_kategori" />
+
+            <EditText
+                android:id="@+id/field_lokasi"
+                android:layout_width="350sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_field"
+                android:fontFamily="@font/font_poppins"
+                android:hint="Masukkan kategori Anda"
+                android:inputType="text"
+                android:padding="12sp"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_lokasi" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:text="Submit"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintVertical_bias="0.337" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.337"
-        android:background="@drawable/custom_button"
-        android:textColor="@color/white"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
