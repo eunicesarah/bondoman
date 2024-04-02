@@ -35,9 +35,10 @@
         app:itemHorizontalPadding="20dp"
         app:itemIconTint="@color/secondary"
         app:itemTextColor="@color/secondary"
-        app:itemVerticalPadding="23dp"
+        app:itemVerticalPadding="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"></com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/bottom_nav">
+    </com.google.android.material.navigation.NavigationView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
