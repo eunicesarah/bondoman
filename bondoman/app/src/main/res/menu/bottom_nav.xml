@@ -6,7 +6,7 @@
         android:layout_height="wrap_content"
         android:title="Transaction"
         android:id="@+id/bill"
-        android:icon="@drawable/baseline_newspaper_24"/>
+        android:icon="@drawable/baseline_newspaper_24" />
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

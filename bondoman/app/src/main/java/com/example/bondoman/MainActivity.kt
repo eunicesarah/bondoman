@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -48,10 +49,22 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(TransactionPage(), HeaderTransaction())
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        binding.bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.scan_cam -> {if(!isNetworkAvailable()){replaceFragment(NetworkLostPage(), HeaderScan())}
                             else{replaceFragment(ScanPage(), HeaderScan())}}
+                R.id.graph -> replaceFragment(GraphPage(), HeaderGraf())
+                R.id.settings -> replaceFragment(SettingsPage(), HeaderSettings())
+                R.id.bill -> replaceFragment(TransactionPage(), HeaderTransaction())
+                R.id.twibbon -> replaceFragment(TwibbonPage(), HeaderTwibbon())
+            }
+            true
+        }
+
+        binding.horizontalNavigation?.setNavigationItemSelectedListener { menuItem : MenuItem ->
+            when (menuItem.itemId) {
+                R.id.scan_cam -> {if(!isNetworkAvailable()){replaceFragment(NetworkLostPage(), HeaderScan())}
+                else{replaceFragment(ScanPage(), HeaderScan())}}
                 R.id.graph -> replaceFragment(GraphPage(), HeaderGraf())
                 R.id.settings -> replaceFragment(SettingsPage(), HeaderSettings())
                 R.id.bill -> replaceFragment(TransactionPage(), HeaderTransaction())

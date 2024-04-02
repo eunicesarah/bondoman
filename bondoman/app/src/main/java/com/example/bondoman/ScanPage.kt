@@ -361,7 +361,8 @@ class ScanPage : Fragment() {
 
             val mainActivity = activity as? MainActivity
             if (mainActivity != null) {
-                mainActivity.binding.bottomNavigationView.selectedItemId = R.id.bill
+                mainActivity.binding.bottomNavigationView?.selectedItemId = R.id.bill
+                mainActivity.binding.horizontalNavigation?.setCheckedItem(R.id.bill)
                 mainActivity.replaceFragment(transactionPage, headerTransaction)
             } else {
                 Log.e("ScanPage", "Activity is null. Cannot cast to MainActivity.")

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".GraphPage">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <include
+        android:id="@+id/header_layout"
+        layout="@layout/fragment_header_graf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_layout"
+            app:layout_constraintVertical_bias="1.0"
+            android:layout_marginStart="20dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <TextView
+            android:id="@+id/persen_tumbas"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/expenses_logo"
+            android:fontFamily="@font/font_poppins"
+            android:padding="10dp"
+            android:text="TUMBAS"
+            android:textColor="@color/secondary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_layout" />
+
+        <ProgressBar
+        android:id="@+id/progress_tumbas"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/persen_tumbas"
+        app:layout_constraintEnd_toEndOf="@+id/persen_tumbas"
+        app:layout_constraintStart_toStartOf="@+id/persen_tumbas"
+        app:layout_constraintTop_toTopOf="@+id/persen_tumbas">
+
+    </ProgressBar>
+
+        <TextView
+            android:id="@+id/persen_upah"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/income_logo"
+            android:fontFamily="@font/font_poppins"
+            android:padding="10dp"
+            android:text="UPAH"
+            android:textColor="@color/secondary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/persen_tumbas" />
+
+        <ProgressBar
+        android:id="@+id/progress_upah"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/persen_upah"
+        app:layout_constraintEnd_toEndOf="@+id/persen_upah"
+        app:layout_constraintStart_toStartOf="@+id/persen_upah"
+        app:layout_constraintTop_toTopOf="@+id/persen_upah"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="20dp">
+
+    </ProgressBar>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
