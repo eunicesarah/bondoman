@@ -126,9 +126,9 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
 //                            Log.d("Address", "check not empty ok")
                             val address = list[0]
                             view?.apply {
-                                field_lokasi.setText(address.getAddressLine(0))
-//                                Log.d("Address", "Latitdue:  ${address.latitude}")
-                                Log.d("Address", "Lokasi:  ${address.getAddressLine(0)}")
+                                field_lokasi.setText("${address.latitude.toString()}, ${address.longitude.toString()}")
+                                Log.d("Address", "Latitdue:  ${field_lokasi}")
+
                             }
                         } else {
 //                            Log.d("Address", "gapunya permission ok")
@@ -138,12 +138,13 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
                 }
             } else {
                 Log.d("Address", "chayon ok")
-                Toast.makeText(requireContext(), "Please turn on location", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Mangga nguripake lokasi sampeyan", Toast.LENGTH_LONG).show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
         } else {
             Log.d("Address", "clohk")
+            field_lokasi.setText("-6.927530659352057, 107.76998310218032")
             requestPermissions()
         }
     }
@@ -209,6 +210,16 @@ class AddTransactionPage : Fragment(R.layout.fragment_add_transaction) {
 
     private fun setUpListener() {
         add_button.setOnClickListener {
+            val judul = field_judul.text.toString().trim()
+            val nominal = field_nominal.text.toString().trim()
+            val selectedRadioButtonId = field_kategori.checkedRadioButtonId
+            val lokasi = field_lokasi.text.toString().trim()
+
+            if (judul.isEmpty() || nominal.isEmpty() || selectedRadioButtonId == -1 || lokasi.isEmpty()) {
+                // At least one field is empty
+                Toast.makeText(requireContext(), "Isi kabeh formulir", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val token = AuthManager.getToken(requireContext()).toString().split('.')
